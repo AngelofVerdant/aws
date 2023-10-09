@@ -1,0 +1,1 @@
+## This is a cloudformation template to generate an AWS vpc and it's resources  using a yaml file
