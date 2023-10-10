@@ -62,6 +62,13 @@ resource "aws_route_table" "deployment-publicRT" {
   }
 }
 
+resource "aws_route_table_association" "publicAssoc" {
+  route_table_id = aws_route_table.deployment-publicRT.id
+  subnet_id      = aws_subnet.deployment-public-subnet.id
+
+
+}
+
 
 resource "aws_route_table" "deployment-privateRT" {
   vpc_id = aws_vpc.deployment.id
@@ -79,20 +86,6 @@ resource "aws_route_table" "deployment-privateRT" {
     Name = "privateRouteTable"
   }
 }
-/*
-
-# Create NAT Gateway
-resource "aws_nat_gateway" "deploymentNAT" {
-  allocation_id = aws_eip.deployemntEIP.id
-  subnet_id     = aws_subnet.deployment-public-subnet
-
-  tags = {
-
-    "Name" = "deploymentNAT"
-  }
-
-}
-*/
 
 
 resource "aws_security_group" "deploymentSG" {
@@ -104,7 +97,7 @@ resource "aws_security_group" "deploymentSG" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["102.216.154.100/31"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -115,12 +108,13 @@ resource "aws_key_pair" "dev0" {
 
 resource "aws_instance" "veritas" {
 
-  instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.deployment-public-subnet.id
-  ami                    = data.aws_ami.server_ami.id
-  key_name               = aws_key_pair.dev0.id
-  vpc_security_group_ids = [aws_security_group.deploymentSG.id]
-  user_data              = file("userdata.tpl")
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.deployment-public-subnet.id
+  ami                         = data.aws_ami.server_ami.id
+  key_name                    = aws_key_pair.dev0.id
+  vpc_security_group_ids      = [aws_security_group.deploymentSG.id]
+  associate_public_ip_address = true
+  user_data                   = file("userdata.tpl")
 
   root_block_device {
     volume_size = 20
