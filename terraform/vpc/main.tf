@@ -1,5 +1,7 @@
 resource "aws_vpc" "deployment" {
   cidr_block = "10.10.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support = true
 
   tags = {
     Name = "deployment"
@@ -77,8 +79,6 @@ resource "aws_route_table" "deployment-privateRT" {
     Name = "privateRouteTable"
   }
 }
-
-
 /*
 
 # Create NAT Gateway
@@ -108,13 +108,25 @@ resource "aws_security_group" "deploymentSG" {
   }
 }
 
+resource "aws_key_pair" "dev0" {
+  key_name   = "aws0dev0"
+  public_key = file("~/.ssh/aws0dev0.pub")
+}
 
 resource "aws_instance" "veritas" {
-  ami           = "ami-00b7cc7d7a9f548ea"
+
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.deployment-public-subnet.id
+  ami           = data.aws_ami.server_ami.id
+  key_name               = aws_key_pair.dev0.id
+  vpc_security_group_ids = [aws_security_group.deploymentSG.id]
+  
+  root_block_device {
+    volume_size = 20
+  }
 
   tags = {
     Name = "Veritas"
   }
+
 }
