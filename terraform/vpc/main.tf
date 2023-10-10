@@ -14,7 +14,6 @@ resource "aws_internet_gateway" "deploymentIGW" {
   tags = {
     Name = "deploymentIGW"
   }
-
 }
 /*
 resource "aws_internet_gateway_attachment" "deployment" {
@@ -30,9 +29,6 @@ resource "aws_subnet" "deployment-public-subnet" {
   tags = {
     Name = "deployment-public-subnet"
   }
-
-
-
 }
 
 
@@ -42,9 +38,6 @@ resource "aws_subnet" "deployment-private-subnet" {
   tags = {
     Name = "deployment-private-subnet"
   }
-
-
-
 }
 
 resource "aws_route_table" "deployment-publicRT" {
@@ -54,16 +47,12 @@ resource "aws_route_table" "deployment-publicRT" {
 
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.deploymentIGW.id
-
-
   }
 
   route {
 
     cidr_block = aws_vpc.deployment.cidr_block
     gateway_id = "local"
-
-
   }
 
   tags = {
@@ -87,18 +76,7 @@ resource "aws_route_table" "deployment-privateRT" {
   tags = {
     Name = "privateRouteTable"
   }
-
-
-
-
-
-
-
-
-
 }
-
-
 
 
 /*
@@ -107,8 +85,6 @@ resource "aws_route_table" "deployment-privateRT" {
 resource "aws_nat_gateway" "deploymentNAT" {
   allocation_id = aws_eip.deployemntEIP.id
   subnet_id     = aws_subnet.deployment-public-subnet
-
-
 
   tags = {
 
@@ -129,12 +105,7 @@ resource "aws_security_group" "deploymentSG" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["102.216.154.100/31"]
-
-
   }
-
-
-
 }
 
 
