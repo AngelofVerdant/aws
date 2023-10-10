@@ -1,7 +1,7 @@
 resource "aws_vpc" "deployment" {
-  cidr_block = "10.10.0.0/16"
+  cidr_block           = "10.10.0.0/16"
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
     Name = "deployment"
@@ -115,12 +115,13 @@ resource "aws_key_pair" "dev0" {
 
 resource "aws_instance" "veritas" {
 
-  instance_type = "t3.micro"
-  subnet_id     = aws_subnet.deployment-public-subnet.id
-  ami           = data.aws_ami.server_ami.id
+  instance_type          = "t3.micro"
+  subnet_id              = aws_subnet.deployment-public-subnet.id
+  ami                    = data.aws_ami.server_ami.id
   key_name               = aws_key_pair.dev0.id
   vpc_security_group_ids = [aws_security_group.deploymentSG.id]
-  
+  user_data              = file("userdata.tpl")
+
   root_block_device {
     volume_size = 20
   }
