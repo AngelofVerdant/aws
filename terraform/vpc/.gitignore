@@ -1,0 +1,42 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Ignore CLI configuration files
+.terraform.d/plugins/
+.terraform.d/plugin-cache/
+
+# Exclude sensitive files containing variable values or secrets
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Ignore crash log files
+crash.log
+
+# Exclude .terraform.lock.hcl file
+.terraform.lock.hcl
+
+# Exclude CLI configuration files
+.terraform.d/cli-config-cache
+
+# Exclude sensitive variable files
+**/override.tf
+**/override.tf.json
+**/.terraformrc
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+**/.terraform.lock.hcl
+
+# Exclude CLI configuration files
+**/.terraform.d/plugins/
+**/.terraform.d/plugin-cache/
+**/.terraform.d/cli-config-cache/
