@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     queue_url = 'YOUR_QUEUE_URL'
 
     # Message to be sent to SQS queue
-    message_body = 'Your text message content'
+    message_body = 'Boruto is better than Naruto,hehe, did I touch a nerve? '
 
     # Create SQS client
     sqs = boto3.client('sqs')
