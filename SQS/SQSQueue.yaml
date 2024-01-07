@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: kephaTestQueue  
+      DelaySeconds: 0
+      MaximumMessageSize: 262144 
+      MessageRetentionPeriod: 86400
+      VisibilityTimeout: 30
