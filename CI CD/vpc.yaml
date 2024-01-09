@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, Routing, and a Security Group
+Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, Routing, Security Group, and EC2 Instances
 
 Resources:
   MyVPC:
@@ -122,3 +122,29 @@ Resources:
       SecurityGroupEgress:
         - CidrIp: '0.0.0.0/0'
           IpProtocol: '-1'
+
+  ContinuousInstance1:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: 'ami-0005e0cfe09cc9050' 
+      InstanceType: 't3.micro'
+      KeyName: 'auth0'
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref PublicSubnet1
+          GroupSet:
+            - !Ref ContinuousSG
+
+  ContinuousInstance2:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: 'ami-0005e0cfe09cc9050' 
+      InstanceType: 't3.micro'
+      KeyName: 'auth0'
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref PublicSubnet2
+          GroupSet:
+            - !Ref ContinuousSG
