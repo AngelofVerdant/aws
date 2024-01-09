@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create a VPC with Public Subnets in Different AZs
+Description: Create a VPC with Public Subnets, Internet Gateway, and Routing
 
 Resources:
   MyVPC:
@@ -29,3 +29,16 @@ Resources:
       Tags:
         - Key: 'Name'
           Value: 'public_2'
+
+  MyInternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: 'Name'
+          Value: 'continuousIGW'
+
+  AttachGateway:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyInternetGateway
