@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, and Routing
+Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, Routing, and a Security Group
 
 Resources:
   MyVPC:
@@ -114,10 +114,11 @@ Resources:
   ContinuousSG:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      GroupName: 'continuousSG'
       GroupDescription: 'Continuous Security Group'
-      VpcId: '!Ref MyVPC' # 
+      VpcId: !Ref MyVPC
       SecurityGroupIngress:
         - CidrIp: '0.0.0.0/0'
-          IpProtocol: '-1' # Allow all traffic
-
+          IpProtocol: '-1'
+      SecurityGroupEgress:
+        - CidrIp: '0.0.0.0/0'
+          IpProtocol: '-1'
