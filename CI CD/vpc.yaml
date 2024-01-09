@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a VPC with Public Subnets in Different AZs
+
+Resources:
+  MyVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: '10.10.0.0/16'
+      Tags:
+        - Key: 'Name'
+          Value: 'continuous_integration'
+
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: '10.10.1.0/24'
+      AvailabilityZone: 'us-east-1a'
+      Tags:
+        - Key: 'Name'
+          Value: 'public_1'
+
+  PublicSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: '10.10.2.0/24'
+      AvailabilityZone: 'us-east-1b'
+      Tags:
+        - Key: 'Name'
+          Value: 'public_2'
