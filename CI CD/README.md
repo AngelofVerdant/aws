@@ -1,1 +1,1 @@
-#This is an automated CI cd
+# Cloudformation file for a vpc, ec2 instance and a Lambda fucntion innit

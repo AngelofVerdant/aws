@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, Routing, Security Group, and EC2 Instances
+Description: Create a VPC with Public Subnets, Internet Gateway, NACLs, Routing, Security Group, EC2 Instances, Route Table, and Subnet Associations
 
 Resources:
   MyVPC:
@@ -48,7 +48,7 @@ Resources:
     Properties:
       VpcId: !Ref MyVPC
       Tags:
-        - Key: 'Name'
+        - Key: 'Name'for
           Value: 'public1ACL'
 
   Public2ACL:
@@ -172,24 +172,25 @@ Resources:
                   - 'ec2:DeleteNetworkInterface'
                 Resource: '*'
 
-  ContinuousLambdaFunction:
-    Type: 'AWS::Lambda::Function'
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
     Properties:
-      FunctionName: 'ContinuousLambda'
-      Runtime: 'python3.12'
-      Handler: 'lambda_function.lambda_handler'
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Code:
-        ZipFile: |
-          import json
-          def lambda_handler(event, context):
-              return {
-                  'statusCode': 200,
-                  'body': json.dumps('Hello from Continuous Lambda!')
-              }
-      Timeout: 30
-      VpcConfig:
-        SecurityGroupIds:
-          - !Ref ContinuousSG
-        SubnetIds:
-          - !Ref PublicSubnet1
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: 'Name'
+          Value: 'publicRT'
+
+  LocalRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: '10.10.0.0/16'
+      VpcPeeringConnectionId: !Ref 'AWS::NoValue' # Local route
+
+  InternetRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: '0.0.0.0
