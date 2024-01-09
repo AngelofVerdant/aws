@@ -1,0 +1,3 @@
+aws ec2 create-key-pair --key-name auth0 --query 'KeyMaterial' --output text > auth0.pem
+
+# Run  the above code in your AWS CLI and check current directory to get your private key
