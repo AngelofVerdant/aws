@@ -1,4 +1,5 @@
-VPC Provisioning YAML Configuration
+## VPC Provisioning YAML Configuration
+
 This repository contains a YAML configuration file for provisioning a Virtual Private Cloud (VPC) and its associated components using infrastructure-as-code (IaC) principles.
 
 Overview
